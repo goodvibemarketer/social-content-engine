@@ -1,8 +1,5 @@
-Content engine starter kit
+Social Content Engine
 Copyright (c) 2026 Mills Media Group Limited (GoodVibeMarketer)
-
-This folder is not covered by the MIT licence that applies to the rest of
-this repository.
 
 You may use, change and run this kit for your own content and for the
 company you work for, including inside your company's private repositories.
