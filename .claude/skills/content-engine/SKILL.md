@@ -1,12 +1,12 @@
 ---
 name: content-engine
-description: Runs the weekly content machine end to end: trend radar, trend report, social posts, infographic (and an animated GIF of it), carousel and a hand-drawn image for X, hosts the media, and saves everything to Buffer as drafts. Use when asked to "run the content engine", "do this week's content", or by the weekly scheduled task.
+description: Runs the weekly content machine end to end: trend radar, then for each of the top three trends a trend report, social posts, infographic (and an animated GIF of it), carousel, sketch and notebook page for each channel, hosts the media, and saves everything to Buffer as drafts. Use when asked to "run the content engine", "do this week's content", or by the weekly scheduled task.
 license: Complete terms in LICENSE.txt
 ---
 
 # Content engine
 
-One run turns this week's trends in your field into a ready-to-approve content pack: posts for LinkedIn, X and Substack Notes, with an infographic (and an animated GIF of it), a carousel and a hand-drawn sketch or notebook page for X, sitting in Buffer as **drafts**. Nothing is published. You approve in Buffer.
+One run turns this week's top three trends in your field (`config/engine.yaml` → `trends_per_run`) into three ready-to-approve content packs, enough to fill the week. With the default `drafts`, each pack is ten drafts: an infographic for LinkedIn, X and Substack Notes, a carousel for LinkedIn, a hand-drawn sketch for LinkedIn, X and Substack, and a notebook page for LinkedIn, X and Substack, each with its own post. Everything sits in Buffer as **drafts**. Nothing is published. You approve in Buffer.
 
 Usually this runs unattended on a schedule. **Never stop to ask a question.** Where a choice is needed, make the sensible one, write it down in the run's `README.md`, and carry on. If a step fails, finish what you can, record the failure, and still commit (step 9).
 
@@ -14,7 +14,7 @@ Settings live in `config/engine.yaml`. Brand lives in `design.md` and `brand/`. 
 
 ## Step 0: Set up the run
 
-1. `TODAY=$(date -u +%F)`. Create `runs/$TODAY-draft/` (renamed in step 2 once the trend is known).
+1. `TODAY=$(date -u +%F)`. Create `runs/$TODAY-radar/` for this week's radar. Each trend gets its own run folder in step 2.
 2. Check tools: `python3 -c "import playwright, yaml, PIL"`. Install what's missing with `pip install --break-system-packages playwright pyyaml pillow`. Don't run `playwright install` if Chromium is preinstalled (`/opt/pw-browsers`).
 3. Fonts: load the fonts named in `design.md`. Files in `brand/fonts/` load with `@font-face`; for a Google font missing from the machine, `npm i --prefix /tmp/fonts @fontsource/<font-name>` and load its woff2 files.
 4. Check Buffer access: `python3 scripts/buffer.py orgs`. If it fails, run everything else and skip step 8, recording why.
@@ -31,17 +31,19 @@ Run the **performance-review** Skill (unattended mode): fetch last week's number
 
 Run the **ai-marketing-trend-radar** Skill in radar mode with its saved Settings, with these overrides for unattended runs:
 - Skip the Setup offer.
-- Skip publishing an artifact and sending files. Save the report as `radar.md` and the data as `radar-data.json` in the run folder. Building the PDF is optional; skip it if time or usage is tight.
+- Skip publishing an artifact and sending files. Save the report as `radar.md` and the data as `radar-data.json` in `runs/$TODAY-radar/`. Building the PDF is optional; skip it if time or usage is tight.
 
-## Step 2: Trend report
+## Step 2: Trend reports (top three)
 
-Run the **trend-report** Skill on `radar-data.json`. It writes `report.md`. Rename the run folder to `runs/$TODAY-<trend-slug>/` (slug: 3–6 lowercase words, hyphenated).
+Pick `trends_per_run` trends from `radar-data.json`, in rank order: highest `score` first (the trend-report Skill's 48-hour shelf-life rule decides only which one leads). Skip any trend that covers the same story as one already picked.
 
-If the report says the trend fell apart on checking, run trend-report again on the next trend. If two trends fail, stop the content steps, write the README, commit, and finish.
+For each pick, create `runs/$TODAY-draft-N/`, copy `radar-data.json` into it, and run the **trend-report** Skill naming that trend. It writes `report.md`. Rename the folder to `runs/$TODAY-<trend-slug>/` (slug: 3–6 lowercase words, hyphenated). If a report says the trend fell apart on checking, delete that folder and take the next trend on the radar instead. If the radar runs out first, carry on with fewer packs and say so in the README.
+
+**Steps 3 to 9 run once per trend, one trend at a time, in rank order:** finish trend 1 all the way to Buffer and commit it before starting trend 2, so a run that is cut short still leaves complete packs. Each trend's files stay in its own folder.
 
 ## Step 3: Posts
 
-Run the **social-posts** Skill on `report.md`. It writes `posts.json` and `posts.md`.
+Run the **social-posts** Skill on this trend's `report.md`. It writes one post per draft slot to `posts.json` and `posts.md`, and reads the earlier trends' `posts.md` so this week's openings don't repeat.
 
 ## Step 4: Graphics
 
@@ -55,15 +57,16 @@ All graphics follow `design.md` (it overrides any footer or CTA rules inside the
 | `infographic-substack.gif` | **infographic-animator**, from the Substack infographic's HTML (step 4b) | Same as the Substack PNG |
 | `carousel.pdf` | **linkedin-carousel-builder** (6–8 slides) | Last slide: `linkedin` follow/save slide (dark) |
 | `carousel-cover.png` | slide 1 of the carousel, 1080×1350 | (Buffer's document thumbnail) |
-| `sketch-x.png` **or** `notebook-x.png` | **sketch-explainer** or **notebook-notes**, alternating week by week (check `runs/graphics-log.json` for which `kind` the X post used last), square, from `report.md` → "The shape of the argument" | none (sketch: the signature from its Make it yours block, if set). A different look from the infographic, so the week's posts don't all look alike |
+| `sketch.png` | **sketch-explainer**, portrait (4:5), from `report.md` → "The shape of the argument" | none (the signature from its Make it yours block, if set) |
+| `notebook.png` | **notebook-notes**, portrait (4:5), from `report.md` (the findings or the process) | none |
 
-Build the infographic once as HTML with the CTA as a swappable block, and render it twice. Keep the HTML in `work/`. Skip the Substack files if `drafts` has no Substack slot, and the X image if it has no X slot.
+Build the infographic once as HTML with the CTA as a swappable block, and render it twice. Keep the HTML in `work/`. Skip any graphic that no draft slot uses. The sketch and the notebook page each take a different slice of the report from the infographic (the sketch: the one idea or contrast; the notebook: the findings, steps or rules), so one trend's graphics don't repeat each other. The same sketch and notebook image go to every channel that uses them.
 
-**Variety.** Read `runs/graphics-log.json` (create it if missing). Pick the infographic's layout archetype, main chart type and hero illustration with the infographic Skill's Variety, Hero illustration and Chart chooser rules: not the same archetype as either of the last two runs, not the same main chart type as the last run. Never copy a previous run's `work/*.html` as a starting point. When done, append `{"run": ..., "archetype": ..., "chart": ..., "hero": ...}` to the log, and `{"run": ..., "kind": "sketch" | "notebook", "layout": ...}` for the X image (don't repeat last week's layout). Same for the carousel: vary chart types across slides, and give the cover a line-art illustration.
+**Variety.** Read `runs/graphics-log.json` (create it if missing). Pick the infographic's layout archetype, main chart type and hero illustration with the infographic Skill's Variety, Hero illustration and Chart chooser rules: not the same archetype as either of the last two runs, not the same main chart type as the last run. The trends in one week count as separate runs, so their infographics all differ, and so do their sketch layouts and notebook looks. Never copy a previous run's `work/*.html` as a starting point. When done, append `{"run": ..., "archetype": ..., "chart": ..., "hero": ..., "sketch_layout": ..., "notebook_look": ...}` to the log (don't repeat last week's sketch layout or notebook look). Same for the carousel: vary chart types across slides, and give the cover a line-art illustration.
 
 **Headlines first.** Before any layout, write three headline options for the infographic and for the carousel cover, following `design.md` → Headlines. Pick the one that passes the stranger test and save all of them in `work/headlines.md`. Then write every carousel slide headline so each one names its subject.
 
-**Check before moving on.** Look at every PNG and at the carousel pages. First, the two hard fails: anything above a headline (eyebrow, kicker, date line or label) on any graphic or slide, and any headline that doesn't name its subject in plain words. Fix those before anything else. Infographic PNGs must be exactly 2160×2700 (the 1080×1350 layout at 2×; see the infographic Skill's Output section); carousel slide PNGs and `carousel-cover.png` stay 1080×1350. Check type sizes on the infographics: nothing under 20px in the layout, body 22px+, small text in a medium weight, not regular. Fix overflow, cut-off text, a headline word orphaned on its own line, a missing hero illustration, a layout that repeats the last run's, a chart type that doesn't suit its data, a highlight that misses its words, or colours that don't follow `design.md` (highlighter `--highlight`; highlighted chart series and big numbers `--accent`). Every number on a graphic must appear in `report.md`.
+**Check before moving on.** Look at every PNG and at the carousel pages. First, the two hard fails: anything above a headline (eyebrow, kicker, date line or label) on any graphic or slide, and any headline that doesn't name its subject in plain words. Fix those before anything else. Infographic, sketch and notebook PNGs must be exactly 2160×2700 (the 1080×1350 layout at 2×; see the infographic Skill's Output section); carousel slide PNGs and `carousel-cover.png` stay 1080×1350. Check type sizes on the infographics: nothing under 20px in the layout, body 22px+, small text in a medium weight, not regular. Fix overflow, cut-off text, a headline word orphaned on its own line, a missing hero illustration, a layout that repeats the last run's, a chart type that doesn't suit its data, a highlight that misses its words, or colours that don't follow `design.md` (highlighter `--highlight`; highlighted chart series and big numbers `--accent`). Every number on a graphic must appear in `report.md`.
 
 ## Step 4b: Animate the infographics
 
@@ -83,14 +86,15 @@ Then run `python3 scripts/publish_media.py runs/<run>` (add `--media-repo <path>
 
 ## Step 6: Build drafts.json
 
-For each channel and slot in `config/engine.yaml` → `drafts`, add one entry:
+For each channel and slot in `config/engine.yaml` → `drafts`, add one entry, with `"post": <the post key>` so the edits and performance scripts can tell the drafts apart:
 
 - `text`: `posts.json[<post>].text`
-- `first_comment`: `posts.json[<post>].first_comment` when it isn't empty. LinkedIn posts it as the first comment; on X `buffer.py` posts it as the reply in a two-post thread. The X post's reply is "Source: {main source title} {url}" from `report.md` → Sources, so the post itself stays free of links.
+- `first_comment`: `posts.json[<post>].first_comment` when it isn't empty. LinkedIn posts it as the first comment; on X `buffer.py` posts it as the reply in a two-post thread. Every X post's reply is "Source: {main source title} {url}" from `report.md` → Sources, so the post itself stays free of links.
 - `asset`:
   - `infographic` → `{"type": "image", "url": <infographic-linkedin.png URL for linkedin, infographic-substack.png URL for x and substack>}`
   - `infographic_gif` → `{"type": "image", "url": <infographic-linkedin.gif URL for linkedin, infographic-substack.gif URL for substack>}`; if that GIF wasn't made this run, use the matching `infographic` PNG instead
-  - `sketch_or_notebook` → `{"type": "image", "url": <sketch-x.png or notebook-x.png URL, whichever was made>}`
+  - `sketch` → `{"type": "image", "url": <sketch.png URL>}`
+  - `notebook` → `{"type": "image", "url": <notebook.png URL>}`
   - `carousel` → `{"type": "document", "url": <carousel.pdf URL>, "thumbnail_url": <carousel-cover.png URL>, "title": posts.json.linkedin_carousel.document_title}`
   - `none` → `null`
 
@@ -141,8 +145,10 @@ Edit drafts in Buffer as you normally would: next week's run compares them with 
 - {failures, fallbacks, skipped steps; "None" if clean}
 ```
 
-Delete `work/` scratch files over 5 MB. Then commit everything in `runs/<run>/` to this repo's `main` with the message `run: {TODAY} {trend name}` and push.
+Delete `work/` scratch files over 5 MB. Then commit everything in `runs/<run>/` to this repo's `main` with the message `run: {TODAY} {trend name}` and push. Then go back to Step 3 for the next trend.
+
+After the last trend, write `runs/$TODAY-radar/README.md`: the week's trends in rank order, each with its run folder, its Buffer status and draft count, and any trend skipped and why. Commit it with the message `run: {TODAY} radar` and push.
 
 ## Step 10: Report back
 
-If a `SendUserMessage` or notification tool is available, send the owner a short summary: the trend, what's in Buffer, anything to check, and the link to the run folder on GitHub. Otherwise end with that summary as the final message.
+If a `SendUserMessage` or notification tool is available, send the owner a short summary: the week's trends, how many drafts each put in Buffer, anything to check, and links to the run folders on GitHub. Otherwise end with that summary as the final message.

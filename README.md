@@ -2,7 +2,7 @@
 
 From the AI Marketing Engineer's Guide by Andy Mills (goodvibemarketer.substack.com).
 
-Every Monday a Claude Code routine reads the week's news in your field, picks the trend that matters most to your audience, checks the facts, writes your LinkedIn, X and Substack posts in your voice, designs a branded infographic (with an animated GIF), a carousel and a hand-drawn image for X, and saves everything in Buffer as drafts. Each week it also learns from the edits you made to last week's drafts. You review, tweak and schedule. Nothing posts without you.
+Every Monday a Claude Code routine reads the week's news in your field, picks the three trends that matter most to your audience, checks the facts, and for each one writes your LinkedIn, X and Substack posts in your voice and designs a branded infographic (with an animated GIF), a carousel, a hand-drawn sketch and a notebook page, then saves everything in Buffer as drafts: 30 a week with the default settings. Each week it also learns from the edits you made to last week's drafts. You review, tweak and schedule. Nothing posts without you.
 
 ## What's in here
 
@@ -31,7 +31,7 @@ scripts/buffer.py               lists Buffer channels, creates drafts
 scripts/performance.py          pulls post results from Buffer for the performance review
 scripts/publish_media.py        puts images online for Buffer
 ROUTINE.md                      the prompt for your weekly routine
-runs/                           one folder per weekly run (Notes batches in runs/notes/)
+runs/                           one folder per trend, plus the week's radar (Notes batches in runs/notes/)
 ```
 
 ## Quick start

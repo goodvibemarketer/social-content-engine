@@ -13,7 +13,7 @@ author:
   region: ""               # blank for global
   language: en-GB          # en-GB or en-US spelling
 
-trends_per_run: 1
+trends_per_run: 3          # the top N radar trends each get a full pack (all the drafts below)
 
 # What each channel's call to action says. Keep LinkedIn post CTAs simple.
 cta:
@@ -31,18 +31,26 @@ cta:
     type: subscribe
     line: ""               # e.g. "More every week at janesmith.substack.com"
 
-# Which drafts go into Buffer for each channel. Remove channels you don't use.
-# Allowed assets: infographic (PNG), infographic_gif (animated GIF of that channel's infographic,
-# LinkedIn and Substack only; falls back to the PNG), sketch_or_notebook (a hand-drawn sketch or a
-# notebook page, alternating weekly), carousel (PDF document, LinkedIn only), none.
+# Which drafts go into Buffer for each channel, for EACH trend (trends_per_run x these).
+# Remove channels or slots you don't use; the engine skips any graphic no slot needs.
+# Allowed assets: infographic (PNG: the LinkedIn version on LinkedIn, the Substack version on
+# X and Substack), infographic_gif (animated GIF of that channel's infographic, LinkedIn and
+# Substack only; falls back to the PNG), carousel (PDF document, LinkedIn only), sketch
+# (hand-drawn explainer), notebook (notebook page), none.
 drafts:
   linkedin:
     - {post: linkedin_infographic, asset: infographic_gif}
     - {post: linkedin_carousel, asset: carousel}
+    - {post: linkedin_sketch, asset: sketch}
+    - {post: linkedin_notebook, asset: notebook}
   x:
-    - {post: x_post, asset: sketch_or_notebook}
+    - {post: x_infographic, asset: infographic}
+    - {post: x_sketch, asset: sketch}
+    - {post: x_notebook, asset: notebook}
   substack:
-    - {post: substack_note, asset: infographic_gif}
+    - {post: substack_infographic, asset: infographic_gif}
+    - {post: substack_sketch, asset: sketch}
+    - {post: substack_notebook, asset: notebook}
 
 # Substack Notes batches (substack-notes Skill): how many Notes a week you aim for.
 notes:
