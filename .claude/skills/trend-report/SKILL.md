@@ -13,7 +13,7 @@ It is not an article for readers. It is the fact sheet and argument a writer and
 ## Inputs
 
 - `radar-data.json` from the AI Marketing Trend Radar (the `trends[]` array, `sources`, `chart_of_week`).
-- The chosen trend: the one the caller names, otherwise the highest `score`.
+- The chosen trend: the one the caller names (the content engine names each of the week's top trends in turn), otherwise the highest `score`.
 - `config/engine.yaml` → `author` (for the angle's point of view).
 
 ## Steps
