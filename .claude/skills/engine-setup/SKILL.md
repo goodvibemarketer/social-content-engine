@@ -14,7 +14,7 @@ Ask **one topic at a time**, in plain language, offering a sensible default they
 | File | What goes in it |
 | --- | --- |
 | `config/engine.yaml` | `author` (name, role, company, LinkedIn URL, newsletter URL, expertise, audience, industry, region, language), CTA lines, channels, Buffer ids, media repo |
-| `.claude/skills/ai-marketing-trend-radar/SKILL.md` → Settings block | topic, audience, audience_detail, region, voice, focus, exclude, priority, official_sources, queries, subreddits, trade_press, design_system, setup_done: true |
+| `.claude/skills/ai-marketing-trend-radar/SKILL.md` → Settings block | topic, audience, audience_detail, region, voice, focus, exclude, priority, official_sources, queries, subreddits, trade_press, newsletters, design_system, saved_theme, setup_done: true |
 | `design.md` | every `TODO`: colour tokens, fonts, sign-off strip, Substack/X free offer |
 | `brand/` | headshot (`headshot.jpg`) or logo (`logo.svg`/`logo.png`), font files if needed |
 | `.claude/skills/{sketch-explainer,notebook-notes,infographic-animator}/SKILL.md` → Make it yours | signature, pen and marker colours, audience (from the brand and audience answers) |
@@ -33,7 +33,7 @@ Ask **one topic at a time**, in plain language, offering a sensible default they
 - Focus: the parts of their field they cover. Offer a list built from their answers to 2 and 3; let them cut it.
 - Exclude: anything to drop even when it trends (e.g. "paid ads", "crypto", "politics").
 - Priority: a vendor or subject they want to be first on (e.g. "Claude and Anthropic releases", "HubSpot updates", "UK employment law changes") and that vendor's official news pages.
-Then generate, show and confirm: 10–14 `queries` as people actually write them, 6–10 `subreddits` where their audience and topic meet, 6–10 `trade_press` domains their audience reads. Only include sources you're confident exist.
+Then generate, show and confirm: 10–14 `queries` as people actually write them, 6–10 `subreddits` where their audience and topic meet, 6–10 `trade_press` domains their audience reads, 4–8 `newsletters` (domains or Substack addresses) they read. Set `region` from their answer to 1 and 2 (blank for global). Only include sources you're confident exist.
 
 **5. Your brand.** Ask, in this order of preference:
 1. A link to their Claude Design System → read its tokens, fonts and logo/headshot assets.
@@ -42,6 +42,7 @@ Then generate, show and confirm: 10–14 `queries` as people actually write them
 Map what you find to the tokens in `design.md` (`--canvas`, `--ink`, `--highlight`, `--accent` and the rest). Check contrast: `--ink` and `--accent-text` must read clearly on `--canvas` (4.5:1 or better). Ask for a headshot (personal brand) or logo (company page) and save it in `brand/`. For a font that isn't on Google Fonts, ask for the woff2 files.
 **Preview:** build one sample infographic with the linkedin-infographic-builder Skill using a made-up headline and no numbers ("Sample: your brand on a graphic"), render it, and show it. Fix what they flag before saving.
 **The other graphics.** Fill the **Make it yours** blocks of the X-image Skills from the same answers, without asking again: `sketch-explainer` (`signature`: "{name} · {website or newsletter}", or blank for none; `pen` and `marker`: two of their brand colours as hex, the marker the lighter one; `audience`, `voice_notes`) and `notebook-notes` (`pen`, `marker`, `audience`, `voice_notes`). In `infographic-animator`, set `substack_cut: yes` if they post Substack Notes. Show the values with the rest of the brand summary.
+**The radar report.** Brand the weekly radar report from the same tokens, without asking again: map `design.md` to a theme as in the radar Skill's Step 5c (`--canvas` → `colors.canvas`, `--ink` → `colors.ink`, the main accent and its dark step → `colors.accent` and `colors.accent_text`, and so on; fonts and `brand` name, link, headshot or logo, newsletter mark). Build the Step 5b preview with it and show it with the infographic preview. Save it in the radar's Settings as `saved_theme` (one-line JSON, images by file name), with `design_system: none` (or the design system's link if they gave one), and add a comment saying the images come from `brand/`.
 
 **6. Channels and calls to action.**
 - Which channels: LinkedIn, X, Substack Notes (remove the others from `drafts`).
