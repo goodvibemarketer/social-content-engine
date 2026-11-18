@@ -89,6 +89,7 @@ Pick the chart from what the numbers are, not from habit:
 | Parts of one whole (2–4 parts, adding to 100%) | Donut or pie, max 4 slices, labels on the slices | Bars |
 | One share of a group ("44% say…") | Waffle (10×10 squares, filled to the %) or a single ring | A lone number in a box, if space allows a chart |
 | "X in 10 people" | Icon array of 10 simple figures | Pie |
+| A calculation (8 hours × 50 people = 400 hours) | The equation itself, numbers in big type: `8 hrs × 50 = 400 hrs` | An icon array or a grid of dots: icon arrays show shares, never multiplication |
 | Change over time, 3+ points | Line chart with the last point labelled | Bars for each year |
 | Two points in time (before → after) | Slope chart, or big arrow between two numbers | Two separate stat cards |
 | Gap between two groups on one measure | Dumbbell (two dots on a line) or paired bars | Pie |
@@ -98,7 +99,9 @@ Pick the chart from what the numbers are, not from habit:
 | Stages that drop off | Funnel | Bars |
 | A score or progress | Gauge or ring | Bars |
 
-Chart rules: label values directly on the chart (no legends unless unavoidable); highlight the one data point that matters in the accent colour and keep the rest neutral; every chart has a one-line takeaway and a source line; draw charts as inline SVG so they're crisp; never invent or round numbers to make a chart work.
+Chart rules: label values directly on the chart (no legends unless unavoidable); highlight the one data point that matters in the accent colour and keep the rest neutral; every chart has a one-line takeaway and a source line; draw charts as inline SVG so they're crisp; never invent or round numbers to make a chart work. If the source calls a figure an estimate, a projection or "up to", say so in a small line under it.
+
+**Every visual has to say something.** Before drawing it, write one sentence saying what it shows, as a stranger would put it ("most firms grew", "larger firms ask for more up front"). If the honest sentence is "there are 50 dots", it's decoration: use the chart the table points to, or the big number on its own. The hero holds the one number or idea that matters, with nothing busy next to it; lists and supporting detail go lower down.
 
 ## Output: rendering the PNG (this part must be exact)
 Design the layout at **1080×1350 CSS px** (4:5) and export the PNG at **2× : exactly 2160×2700 px**. Phones show a feed image about 400 points wide on screens with 3× pixel density, and platforms recompress what you upload, so a 1080-px file looks soft by the time it's on screen. A 2× file gives the platform more detail to scale down from, and text edges stay crisp. Same shape, same layout; LinkedIn, Substack and X all accept it (keep it under 5 MB; a flat-colour infographic is usually 1–1.5 MB).
@@ -140,6 +143,7 @@ If Playwright is unavailable, fall back to building the canvas directly with Pil
 - Is there a hero illustration that carries the headline's idea, big enough to notice in the feed?
 - Did the story pick the layout archetype, and is it different from the last two graphics?
 - Is each chart the right type for its data (check the Chart chooser), with values labelled on the chart?
+- The stranger test: looking only at the PNG, can you say in one sentence what it claims? If that sentence is vague, or a visual exists only to fill space, redesign it.
 - Does the footer dynamically adapt to either a company logo layout or a circular LinkedIn profile avatar?
 - Is the saved file exactly 2160×2700 px (the 1080×1350 layout at 2×)?
 - Is every piece of text at least 20px (body 22px+), with anything under 24px in a medium weight (500)?
