@@ -43,7 +43,7 @@ AI engines naturally default to highly predictable layouts, identical grids, and
 - **Lead with the payoff.** Put the takeaway near the top; supporting detail flows below it.
 
 ## Visual approach (Token-Driven)
-- **Notepad Grid Background:** Style the base layout background container using a faint, clean, architect-style notepad grid line pattern. Generate this layout asset purely through CSS repeating linear gradients (`linear-gradient`) using light, subtle opacity system tokens.
+- **Background: the brand's, not a default.** Use the canvas the design system or the brand's own website actually uses: a plain colour, a soft gradient or colour mesh, a texture. Draw a notepad grid (faint CSS `linear-gradient` lines in 36–40px squares) only when the design system lists one, such as a `--grid-line` token in `design.md`, or the brand's site uses one. Never add it by default.
 - **Organic Title Highlighting:** Apply a distinct, irregular, semi-transparent marker brush stroke vector graphic element immediately underneath primary accent keywords within the main hero title to anchor visual hierarchy.
 - **Clear Stroke-Based Line Art:** All custom graphical metaphors or layout icons (such as a minimalist tombstone silhouette or trend lines) must be rendered using clean, crisp vector stroke paths (`stroke-width`, `stroke-linecap: round`). Avoid heavy, solid, filled silhouette blocks or flat clipart shapes. See **Hero illustration** below: every infographic has one.
 - **Color carries meaning, not decoration.** Pull your primary, secondary, and neutral colors directly from the design system tokens. Reserve accent states for hyper-specific callouts or semantic data states (positive/negative).
@@ -66,7 +66,7 @@ Infographics posted week after week must not look like the same template with ne
 | **Scorecard** | comparing several options on the same criteria | A clean table or matrix with ticks, ratings or mini-bars; one row highlighted |
 
 Rules:
-- **Don't reuse a previous infographic's HTML as a starting point.** Start from a blank page and the chosen archetype. Shared pieces (grid background, highlighter, footer, CTA block) can be reused; the body layout cannot.
+- **Don't reuse a previous infographic's HTML as a starting point.** Start from a blank page and the chosen archetype. Shared pieces (background, highlighter, footer, CTA block) can be reused; the body layout cannot.
 - **Rotate.** If a log of recent graphics exists (in the content engine: `runs/graphics-log.json`), don't use the same archetype as either of the last two, and don't use the same main chart type as the last one, unless the data really leaves no other honest choice. Add this graphic's archetype, chart type and hero illustration to the log when done.
 - **Vary the furniture too:** don't always end on a dark band, don't always use two stat cards side by side, and change where the hero sits (top, middle, left half).
 
@@ -138,7 +138,7 @@ If Playwright is unavailable, fall back to building the canvas directly with Pil
 - Did you verify if a `design.md` or system layout token profile was active?
 - If it wasn't clear, did you pause to request the design system or target brand?
 - Did you check that the top margin area is completely free of running headers, category text tags, or subtitle lines?
-- Does the background accurately construct a subtle notepad-style grid pattern, and do the key header words use an organic highlighter mark?
+- Does the background match the brand (a notepad grid only if their design system uses one), and do the key header words use an organic highlighter mark?
 - Are your graphical metaphors restricted strictly to crisp, stroke-based line art?
 - Is there a hero illustration that carries the headline's idea, big enough to notice in the feed?
 - Did the story pick the layout archetype, and is it different from the last two graphics?
