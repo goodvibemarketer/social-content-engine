@@ -34,7 +34,7 @@ Use these names in every graphic. Map your brand to them; don't invent new ones.
 
 ## Signatures
 
-- Faint notepad grid on the canvas: 36–40px squares in `--grid-line`. (Delete this line if your brand wants a plain background.)
+- Background: plain `--canvas` unless your brand uses a pattern. Keep this line and set `--grid-line` only if a faint notepad grid (36–40px squares) is part of your brand; otherwise delete it, and the infographic builder uses a plain canvas.
 - Highlighter: an irregular brush stroke in `--highlight` (opacity ~0.45 on light, ~0.7 on dark) behind 1–3 key words of the headline.
 - Charts and numbers: the highlighted series is `--accent`, the rest `--surface-strong`; big numbers in `--accent-text`.
 - Icons and illustrations: thin stroke line art, round caps, `--ink` with one accent. No filled clip art.
