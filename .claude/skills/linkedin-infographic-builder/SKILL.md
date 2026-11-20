@@ -103,6 +103,14 @@ Chart rules: label values directly on the chart (no legends unless unavoidable);
 
 **Every visual has to say something.** Before drawing it, write one sentence saying what it shows, as a stranger would put it ("most firms grew", "larger firms ask for more up front"). If the honest sentence is "there are 50 dots", it's decoration: use the chart the table points to, or the big number on its own. The hero holds the one number or idea that matters, with nothing busy next to it; lists and supporting detail go lower down.
 
+## Lessons from real briefs
+
+- **Explain, don't just point.** If the subject is a concept, method or framework, the graphic has to say what it is, how it works and what to do about it, not only why it matters. Test: would someone who has never heard the term understand it from the graphic alone?
+- **Borrow an interface the reader already knows.** A calendar, a search results page, an inbox, a dashboard or a receipt is read in a second, so an everyday object carrying the idea beats an abstract diagram (a four-day week as a work-week calendar with Friday marked out of office). Draw it generically: no real product's name or logo.
+- **Avoid the template look.** These read as AI-made: slogan headlines built as "X. Same Y."; a dot grid next to a two-by-two box of big numbers; a hero plus five tips plus two stat boxes. One hero, then one or two supporting blocks.
+- **Every word of the headline claim is in the source.** "No loss of pay" is not "Fridays off". When a chart sets different measures side by side, say on the chart that they are separate measures.
+- **Making a set? Vary the look on purpose.** Graphics shown together (examples, a series) need different backgrounds (light, dark, bright), type and layouts, or they read as one template.
+
 ## Output: rendering the PNG (this part must be exact)
 Design the layout at **1080×1350 CSS px** (4:5) and export the PNG at **2× : exactly 2160×2700 px**. Phones show a feed image about 400 points wide on screens with 3× pixel density, and platforms recompress what you upload, so a 1080-px file looks soft by the time it's on screen. A 2× file gives the platform more detail to scale down from, and text edges stay crisp. Same shape, same layout; LinkedIn, Substack and X all accept it (keep it under 5 MB; a flat-colour infographic is usually 1–1.5 MB).
 
@@ -135,6 +143,8 @@ If Playwright is unavailable, fall back to building the canvas directly with Pil
 **Always keep the HTML next to the PNG.** Save the source as `<name>.html` beside `<name>.png` (e.g. `infographic.html` and `infographic.png`) and deliver both. Make it self-contained: embed fonts and images as data URIs, or reference them with paths relative to the HTML file, never absolute paths from this machine. Give each block a clear class name (`.headline`, `.hero`, `.chart`, `.cta`, `.footer`, and so on). The HTML is what lets the graphic be fixed and re-rendered later, or turned into an animated GIF with the infographic-animator Skill (Step 4b of the content engine). A PNG-only infographic can still be animated, but only with simple section fades.
 
 ## Before you finish — self-audit
+- Concept or method: does it say what the thing is and how it works, not just why it matters?
+- Does any part look like a template (a slogan headline, a dot grid with stat boxes, lots of small blocks)? Is every word of the headline claim in the source?
 - Did you verify if a `design.md` or system layout token profile was active?
 - If it wasn't clear, did you pause to request the design system or target brand?
 - Did you check that the top margin area is completely free of running headers, category text tags, or subtitle lines?
